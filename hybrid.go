@@ -1,12 +1,24 @@
 package main
 
-import "fmt"
+import (
+	// internals
+	"fmt"
+	"os"
 
-func hybridMode() {
+	// externals
+	"github.com/GlenDC/go-external-ip"
+	//"github.com/libp2p/go-libp2p"
+	//"github.com/libp2p/go-libp2p-crypto"
+	//"github.com/libp2p/go-libp2p-host"
+	//"github.com/libp2p/go-libp2p-net"
+	//"github.com/libp2p/go-libp2p-peer"
+	//"github.com/libp2p/go-libp2p-peerstore"
+	//"github.com/multiformats/go-multiaddr"
+)
 
-	var addr string
-	
-	fmt.Printf("sadily, this does not work yet :p\n")
+func initHybridModeServer() {
+
+	//var addr string
 
 	if question("are you sure?", []string{"yes", "no"}) == "no" {
 
@@ -14,15 +26,18 @@ func hybridMode() {
 
 	}
 
-	for {
+	fmt.Printf("retrieving external ip address... ")
+	consensus := externalip.DefaultConsensus(nil, nil)
+	ip, err := consensus.ExternalIP()
+	if err != nil {
 
-		addr = question("enter the address of the master", []string{})
-
-		// attempt to verify the connection
-		fmt.Printf("address: %s\n", addr)
-
-		return
+		fmt.Printf("\n[err]: unable to retrieve external ip address...\n")
+		fmt.Printf("       %v\n", err)
+		os.Exit(1)
 
 	}
+
+	fmt.Printf("done. ip is %s\n", ip.String())
+	return
 
 }

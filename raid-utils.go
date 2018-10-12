@@ -122,7 +122,7 @@ func main() {
 			menuOptRaid()
 
 		case "2":
-			fmt.Println("unfinished :(")
+			initHybridModeServer()
 
 		case "3":
 			fmt.Println()
