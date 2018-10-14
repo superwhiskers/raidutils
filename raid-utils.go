@@ -88,7 +88,7 @@ func main() {
 
 	}
 
-	if len(servers) > serverIndInt {
+	if len(servers) > serverIndInt && serverIndInt > -1 {
 
 		server = servers[serverIndInt]
 

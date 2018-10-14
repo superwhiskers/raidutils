@@ -31,7 +31,8 @@ func initHybridModeServer() {
 	ip, err := consensus.ExternalIP()
 	if err != nil {
 
-		fmt.Printf("\n[err]: unable to retrieve external ip address...\n")
+		fmt.Printf("failed\n")
+		fmt.Printf("[err]: unable to retrieve external ip address...\n")
 		fmt.Printf("       %v\n", err)
 		os.Exit(1)
 

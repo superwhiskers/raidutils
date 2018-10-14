@@ -19,8 +19,45 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
+const (
+	// random string generation things
+	letterBytes   = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	letterIdxBits = 6
+	letterIdxMask = 1<<letterIdxBits - 1
+	letterIdxMax  = 63 / letterIdxBits
+)
+
 // useful for human-friendly input
 var convertYNToBool = map[string]bool{"yes": true, "no": false}
+
+// generates random alphabetical strings quickly
+func randalphastring(n int) string {
+
+	src := rand.NewSource(time.Now().UnixNano())
+	b := make([]byte, n)
+	for i, cache, remain := n-1, src.Int63(), letterIdxMax; i >= 0; {
+
+		if remain == 0 {
+
+			cache, remain = src.Int63(), letterIdxMax
+
+		}
+
+		if idx := int(cache & letterIdxMask); idx < len(letterBytes) {
+
+			b[i] = letterBytes[idx]
+			i--
+
+		}
+
+		cache >>= letterIdxBits
+		remain--
+
+	}
+
+	return string(b)
+
+}
 
 // get input from console easily
 func input(prompt string) string {
@@ -38,11 +75,8 @@ func input(prompt string) string {
 // function to generate a random integer within a given range
 func randint(min, max int) int {
 
-	// create a seed that is different each time
-	rand.Seed(time.Now().Unix())
-
-	// generate a random int within the range
-	return rand.Intn(max-min) + min
+	src := rand.New(rand.NewSource(time.Now().Unix()))
+	return src.Intn(max-min) + min
 
 }
 

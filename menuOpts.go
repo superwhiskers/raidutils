@@ -13,6 +13,7 @@ import (
 	"os"
 	"os/signal"
 	"strconv"
+	"strings"
 	"syscall"
 	// externals
 	"github.com/bwmarrin/discordgo"
@@ -56,9 +57,9 @@ func menuOptRaid() {
 		allChannels, err := dg.GuildChannels(server.ID)
 		if err != nil {
 
-			fmt.Printf("[err]: unable to retrieve channels for the selected server...\n")
+			fmt.Printf("[err]: unable to retrieve channels for the selected server... (returning to menu)\n")
 			fmt.Printf("       %v\n", err)
-			os.Exit(1)
+			return
 
 		}
 
@@ -83,7 +84,7 @@ func menuOptRaid() {
 		fmt.Printf("approximately %d webhooks will be spawned\n", hooks)
 		if question("are you sure you want to proceed?", []string{"yes", "no"}) == "no" {
 
-			os.Exit(0)
+			return
 
 		}
 
@@ -120,36 +121,36 @@ func menuOptServerInfo() {
 	guild, err := dg.Guild(server.ID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve the guild object for the selected server...\n")
+		fmt.Printf("[err]: unable to retrieve the guild object for the selected server... (returning to menu)\n")
 		fmt.Printf("       %v\n", err)
-		os.Exit(1)
+		return
 
 	}
 
 	hooks, err := dg.GuildWebhooks(guild.ID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve webhooks for the selected server...\n")
+		fmt.Printf("[err]: unable to retrieve webhooks for the selected server... (returning to menu)\n")
 		fmt.Printf("       %v\n", err)
-		os.Exit(1)
+		return
 
 	}
 
 	channels, err = dg.GuildChannels(guild.ID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve the channels for the selected server...\n")
+		fmt.Printf("[err]: unable to retrieve the channels for the selected server... (returning to menu)\n")
 		fmt.Printf("       %v\n", err)
-		os.Exit(1)
+		return
 
 	}
 
 	owner, err := dg.User(guild.OwnerID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve the guild owner for the selected server...\n")
+		fmt.Printf("[err]: unable to retrieve the guild owner for the selected server... (returning to menu)\n")
 		fmt.Printf("       %v\n", err)
-		os.Exit(1)
+		return
 
 	}
 
@@ -195,9 +196,9 @@ func menuOptDeleteWebhooks() {
 	hooks, err := dg.GuildWebhooks(server.ID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve webhooks for the selected server...\n")
+		fmt.Printf("[err]: unable to retrieve webhooks for the selected server... (returning to menu)\n")
 		fmt.Printf("       %v\n", err)
-		os.Exit(1)
+		return
 
 	}
 
@@ -210,7 +211,7 @@ func menuOptDeleteWebhooks() {
 		err := dg.WebhookDelete(hook.ID)
 		if err != nil {
 
-			fmt.Printf("[err]: unable to delete webhook...\n")
+			fmt.Printf("\n[err]: unable to delete webhook...\n")
 			fmt.Printf("       %v\n", err)
 
 		}
@@ -229,9 +230,9 @@ func menuOptAddChannels() {
 	channels, err = dg.GuildChannels(server.ID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve the channels for the selected server...\n")
+		fmt.Printf("[err]: unable to retrieve the channels for the selected server... (returning to menu)\n")
 		fmt.Printf("       %v\n", err)
-		os.Exit(1)
+		return
 
 	}
 
@@ -275,12 +276,12 @@ func menuOptAddChannels() {
 
 		fmt.Printf("\radding channel %d/%d...", (x+1)-len(channels), channelCount-len(channels))
 
-		_, err := dg.GuildChannelCreate(server.ID, "spam", "text")
+		_, err := dg.GuildChannelCreate(server.ID, strings.Join([]string{randalphastring(12), strconv.Itoa(randint(1000000000, 9999999999))}, ""), "text")
 		if err != nil {
 
-			fmt.Printf("[err]: unable to create channel...\n")
+			fmt.Printf("\n[err]: unable to create channel... (returning to menu)\n")
 			fmt.Printf("       %v\n", err)
-			os.Exit(1)
+			return
 
 		}
 
@@ -307,9 +308,9 @@ func menuOptGetInvite() {
 		allChannels, err := dg.GuildChannels(server.ID)
 		if err != nil {
 
-			fmt.Printf("[err]: unable to retrieve the channels for the selected server...\n")
+			fmt.Printf("[err]: unable to retrieve the channels for the selected server... (returning to menu)\n")
 			fmt.Printf("       %v\n", err)
-			os.Exit(1)
+			return
 
 		}
 
@@ -333,9 +334,9 @@ func menuOptGetInvite() {
 		})
 		if err != nil {
 
-			fmt.Printf("[err]: unable to create an invite for the selected server...\n")
+			fmt.Printf("[err]: unable to create an invite for the selected server... (returning to menu)\n")
 			fmt.Printf("       %v\n", err)
-			os.Exit(1)
+			return
 
 		}
 
@@ -359,9 +360,9 @@ func menuOptChangeServer() {
 	servers, err := dg.UserGuilds(100, "", "")
 	if err != nil {
 
-		fmt.Printf("[err]: could not retrieve the guilds for the bot...\n")
+		fmt.Printf("[err]: could not retrieve the guilds for the bot... (returning to menu)\n")
 		fmt.Printf("       %v\n", err)
-		os.Exit(1)
+		return
 
 	}
 
@@ -376,20 +377,19 @@ func menuOptChangeServer() {
 	serverIndInt, err := strconv.Atoi(serverIndStr)
 	if err != nil {
 
-		fmt.Printf("[err]: %s is not a number...\n", serverIndStr)
+		fmt.Printf("[err]: %s is not a number... (returning to menu)\n", serverIndStr)
 		fmt.Printf("       %v\n", err)
-		os.Exit(1)
+		return
 
 	}
 
-	if len(servers) > serverIndInt {
+	if len(servers) > serverIndInt && serverIndInt > -1 {
 
 		server = servers[serverIndInt]
 
 	} else {
 
-		fmt.Printf("[err]: %s is not in the server list...\n", serverIndStr)
-		os.Exit(1)
+		fmt.Printf("[err]: %s is not in the server list... (returning to the menu)\n", serverIndStr)
 
 	}
 
