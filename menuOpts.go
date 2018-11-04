@@ -130,27 +130,24 @@ func menuOptServerInfo() {
 	hooks, err := dg.GuildWebhooks(guild.ID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve webhooks for the selected server... (returning to menu)\n")
+		fmt.Printf("[err]: unable to retrieve webhooks for the selected server... (continuing anyways)\n")
 		fmt.Printf("       %v\n", err)
-		return
 
 	}
 
 	channels, err = dg.GuildChannels(guild.ID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve the channels for the selected server... (returning to menu)\n")
+		fmt.Printf("[err]: unable to retrieve the channels for the selected server... (continuing anyways)\n")
 		fmt.Printf("       %v\n", err)
-		return
 
 	}
 
 	owner, err := dg.User(guild.OwnerID)
 	if err != nil {
 
-		fmt.Printf("[err]: unable to retrieve the guild owner for the selected server... (returning to menu)\n")
+		fmt.Printf("[err]: unable to retrieve the guild owner for the selected server... (continuing anyways)\n")
 		fmt.Printf("       %v\n", err)
-		return
 
 	}
 
