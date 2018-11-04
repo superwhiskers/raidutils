@@ -394,3 +394,36 @@ func menuOptChangeServer() {
 	}
 
 }
+
+// makes the target user leave every server that they're in
+func menuOptLeaveAll() {
+
+	servers, err := dg.UserGuilds(100, "", "")
+	if err != nil {
+
+		fmt.Printf("[err]: could not retrieve the guilds for the bot... (returning to menu)\n")
+		fmt.Printf("       %v\n", err)
+		return
+
+	}
+
+	length := len(servers)
+	fmt.Printf("leaving server 0/%d...", length)
+
+	for i, s := range servers {
+
+		fmt.Printf("\rleaving server %d/%d...", i+1, length)
+
+		err = dg.GuildLeave(s.ID)
+		if err != nil {
+
+			fmt.Printf("\n[err]: unable to leave server %s... (continuing anyways)\n", s.Name)
+			fmt.Printf("       %v\n", err)
+
+		}
+
+	}
+
+	fmt.Printf("\n")
+
+}

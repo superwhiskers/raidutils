@@ -131,10 +131,11 @@ func main() {
 			fmt.Println(" 2. clear webhooks")
 			fmt.Println(" 3. fill channel list")
 			fmt.Println(" 4. retrieve invite code")
-			fmt.Println(" 5. back")
+			fmt.Println(" 5. leave every server")
+			fmt.Println(" 6. go back")
 			fmt.Println()
 
-			switch question("select an option", []string{"1", "2", "3", "4", "5"}) {
+			switch question("select an option", []string{"1", "2", "3", "4", "5", "6"}) {
 
 			case "1":
 				menuOptServerInfo()
@@ -147,6 +148,9 @@ func main() {
 
 			case "4":
 				menuOptGetInvite()
+
+			case "5":
+				menuOptLeaveAll()
 
 			}
 
