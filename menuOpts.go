@@ -273,7 +273,7 @@ func menuOptAddChannels() {
 
 		fmt.Printf("\radding channel %d/%d...", (x+1)-len(channels), channelCount-len(channels))
 
-		_, err := dg.GuildChannelCreate(server.ID, strings.Join([]string{randalphastring(randint(5, 12)), strconv.Itoa(randint(10000, 999999999))}, ""), "text")
+		_, err := dg.GuildChannelCreate(server.ID, strings.Join([]string{randalphastring(randint(5, 12)), strconv.Itoa(randint(10000, 999999999))}, ""), discordgo.ChannelTypeGuildText)
 		if err != nil {
 
 			fmt.Printf("\n[err]: unable to create channel... (returning to menu)\n")
