@@ -392,6 +392,21 @@ func menuOptChangeServer() {
 
 }
 
+// makes the target user leave the currently selected server
+func menuOptLeaveCurrent() {
+
+	err = dg.GuildLeave(s.ID)
+	if err != nil {
+
+		fmt.Printf("\n[err]: unable to leave %s... (continuing anyways)\n", server.Name)
+		fmt.Printf("       %v\n", err)
+
+	}
+
+	menuOptChangeServer()
+
+}
+
 // makes the target user leave every server that they're in
 func menuOptLeaveAll() {
 
@@ -414,7 +429,7 @@ func menuOptLeaveAll() {
 		err = dg.GuildLeave(s.ID)
 		if err != nil {
 
-			fmt.Printf("\n[err]: unable to leave server %s... (continuing anyways)\n", s.Name)
+			fmt.Printf("\n[err]: unable to leave %s... (continuing anyways)\n", s.Name)
 			fmt.Printf("       %v\n", err)
 
 		}
