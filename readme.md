@@ -4,7 +4,7 @@
 
 ### installation
 
-just run `go get github.com/superwhiskers/raidutils` and then you're done
+just run `go get github.com/superwhiskers/raidutils2` and then you're done
 
 ### why
 
